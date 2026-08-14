@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khushi Sharma — Data Science Portfolio</title>
+<meta name="description" content="Khushi Sharma — final-year CS undergrad, 4 data science internships, production ML pipelines, forecasting, NLP, and deployed applications.">
+<meta property="og:title" content="Khushi Sharma — Data Science Portfolio">
+<meta property="og:description" content="Final-year CS undergrad with 4 data science internships across forecasting, deep learning, and production ML.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:        #0E1420;
+    --bg-alt:    #131A29;
+    --bg-panel:  #161E30;
+    --grid:      #1E2740;
+    --hair:      #26304A;
+    --ink:       #ECEEF3;
+    --ink-soft:  #8D97AE;
+    --ink-dim:   #3E4A66;
+    --signal:    #7C93FF;   /* forecast line */
+    --signal-fill: rgba(124,147,255,0.14);
+    --cyan:      #4FD6C4;   /* secondary series / accents */
+    --anomaly:   #FF6B5B;   /* anomaly flag */
+    --anomaly-fill: rgba(255,107,91,0.12);
+
+    --display: 'Space Grotesk', sans-serif;
+    --body:    'IBM Plex Sans', sans-serif;
+    --mono:    'IBM Plex Mono', monospace;
+
+    --maxw: 1100px;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/48px 48px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/48px 48px,
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+  }
+
+  a{ color:inherit; text-decoration:none; }
+  ::selection{ background:var(--signal); color:var(--bg); }
+  :focus-visible{ outline:2px solid var(--signal); outline-offset:3px; }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+  section{ padding:104px 0; border-bottom:1px solid var(--hair); }
+  section:last-of-type{ border-bottom:none; }
+  @media (max-width:640px){ section{ padding:68px 0; } }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--cyan);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:20px;
+  }
+  .eyebrow::before{ content:'//'; color:var(--ink-dim,#3E4A66); }
+
+  h1,h2,h3{ font-family:var(--display); font-weight:600; letter-spacing:-0.01em; color:var(--ink); }
+  h2{ font-size:clamp(26px,3.6vw,36px); margin-bottom:40px; }
+  p{ color:var(--ink-soft); }
+
+  /* ---- Nav ---- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(14,20,32,.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--hair);
+  }
+  nav.wrap{ display:flex; align-items:center; justify-content:space-between; padding:16px 28px; }
+  .logo{ font-family:var(--mono); font-weight:600; font-size:14px; display:flex; align-items:center; gap:8px; }
+  .logo .dot{ width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan); }
+  .navlinks{ display:none; gap:26px; font-family:var(--mono); font-size:12.5px; }
+  .navlinks a{ color:var(--ink-soft); transition:color .15s; }
+  .navlinks a:hover{ color:var(--signal); }
+  @media (min-width:760px){ .navlinks{ display:flex; } }
+  .nav-status{ font-family:var(--mono); font-size:11.5px; color:var(--cyan); display:flex; align-items:center; gap:6px; }
+  .nav-status .pulse{ width:6px; height:6px; border-radius:50%; background:var(--cyan); animation:pulse 2s infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+
+  /* ---- Hero ---- */
+  .hero{ padding-top:64px; }
+  .hero-grid{ display:grid; grid-template-columns:1.05fr 1fr; gap:52px; align-items:center; }
+  @media (max-width:900px){ .hero-grid{ grid-template-columns:1fr; } }
+
+  .hero h1{ font-size:clamp(34px,5.4vw,56px); line-height:1.08; }
+  .hero h1 em{ font-style:normal; color:var(--signal); }
+  .hero p.lede{ font-size:17px; max-width:50ch; margin-top:20px; }
+  .hero-cta{ display:flex; gap:14px; margin-top:32px; flex-wrap:wrap; }
+  .btn{
+    font-family:var(--mono); font-size:13px; padding:13px 22px;
+    border-radius:4px; border:1px solid var(--hair); display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s, background .15s, color .15s, border-color .15s;
+  }
+  .btn-primary{ background:var(--signal); color:var(--bg); border-color:var(--signal); font-weight:600; }
+  .btn-primary:hover{ background:var(--cyan); border-color:var(--cyan); transform:translateY(-1px); }
+  .btn-ghost{ color:var(--ink); }
+  .btn-ghost:hover{ border-color:var(--signal); color:var(--signal); transform:translateY(-1px); }
+
+  .stat-row{ display:flex; gap:0; margin-top:52px; flex-wrap:wrap; font-family:var(--mono); border-top:1px solid var(--hair); }
+  .stat{ padding:16px 26px 0 0; margin-right:26px; }
+  .stat b{ display:block; font-size:26px; color:var(--ink); font-family:var(--display); }
+  .stat span{ font-size:11px; color:var(--ink-soft); letter-spacing:.03em; }
+
+  .plot-card{
+    background:var(--bg-panel); border:1px solid var(--hair); border-radius:8px;
+    padding:20px; box-shadow:0 24px 60px -30px rgba(0,0,0,.6);
+  }
+  canvas#plot{ width:100%; height:auto; display:block; }
+  .plot-caption{ font-family:var(--mono); font-size:11px; color:var(--ink-soft); margin-top:14px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  .legend{ display:flex; gap:14px; flex-wrap:wrap; }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .legend i{ width:10px; height:10px; border-radius:2px; display:inline-block; }
+
+  /* ---- About ---- */
+  .about-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:48px; }
+  @media (max-width:760px){ .about-grid{ grid-template-columns:1fr; } }
+  .about-grid p{ font-size:16px; }
+  .about-grid p + p{ margin-top:14px; }
+  .fact-card{ background:var(--bg-panel); border:1px solid var(--hair); border-radius:8px; padding:24px; }
+  .fact-row{ display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--hair); font-family:var(--mono); font-size:13px; }
+  .fact-row:last-child{ border-bottom:none; }
+  .fact-row span:first-child{ color:var(--ink-soft); }
+  .fact-row span:last-child{ color:var(--ink); text-align:right; }
+
+  /* ---- Skills / filter ---- */
+  .skill-cats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:28px; margin-bottom:8px; }
+  .skill-cat h3{ font-family:var(--mono); font-size:12px; color:var(--cyan); font-weight:600; margin-bottom:14px; letter-spacing:.04em; text-transform:uppercase; }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-family:var(--mono); font-size:12px; padding:7px 13px;
+    border:1px solid var(--hair); border-radius:20px; background:var(--bg-panel); color:var(--ink);
+    cursor:pointer; transition:border-color .15s, color .15s, background .15s;
+  }
+  .chip:hover{ border-color:var(--signal); color:var(--signal); }
+  .chip.active{ background:var(--signal); color:var(--bg); border-color:var(--signal); font-weight:600; }
+
+  .filter-hint{ font-family:var(--mono); font-size:12px; color:var(--ink-soft); margin-top:28px; display:flex; align-items:center; gap:10px; }
+  .filter-hint code{ color:var(--cyan); }
+
+  /* ---- Projects ---- */
+  .proj-list{ display:flex; flex-direction:column; gap:2px; margin-top:36px; }
+  .proj{
+    display:grid; grid-template-columns:0.9fr 2fr; gap:32px;
+    padding:34px 0; border-top:1px solid var(--hair);
+    transition:opacity .25s, transform .25s;
+  }
+  .proj.hide{ display:none; }
+  .proj:last-child{ border-bottom:1px solid var(--hair); }
+  @media (max-width:720px){ .proj{ grid-template-columns:1fr; gap:14px; } }
+  .proj-status{ font-family:var(--mono); font-size:11px; letter-spacing:.05em; padding:4px 10px; border-radius:3px; display:inline-block; text-transform:uppercase; }
+  .status-live{ background:var(--anomaly-fill); color:var(--anomaly); }
+  .status-deployed{ background:var(--signal-fill); color:var(--signal); }
+  .proj-title{ font-family:var(--display); font-size:21px; font-weight:600; margin-top:10px; }
+  .proj-body p{ font-size:14.5px; }
+  .proj-tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .tag{ font-family:var(--mono); font-size:11px; color:var(--cyan); background:rgba(79,214,196,0.1); padding:4px 9px; border-radius:3px; }
+  .proj-links{ margin-top:16px; display:flex; gap:18px; font-family:var(--mono); font-size:12px; }
+  .proj-links a{ border-bottom:1px solid var(--ink-soft); padding-bottom:1px; }
+  .proj-links a:hover{ color:var(--signal); border-color:var(--signal); }
+  .proj-metric{ font-family:var(--mono); font-size:12px; color:var(--ink-soft); margin-top:12px; }
+  .proj-metric b{ color:var(--ink); }
+
+  /* ---- Timeline ---- */
+  .timeline{ position:relative; padding-left:30px; }
+  .timeline::before{ content:''; position:absolute; left:5px; top:6px; bottom:6px; width:1px; background:var(--hair); }
+  .t-item{ position:relative; padding-bottom:36px; }
+  .t-item:last-child{ padding-bottom:0; }
+  .t-item::before{
+    content:''; position:absolute; left:-30px; top:5px; width:9px; height:9px;
+    border-radius:50%; background:var(--bg); border:2px solid var(--signal);
+  }
+  .t-date{ font-family:var(--mono); font-size:11.5px; color:var(--cyan); letter-spacing:.02em; }
+  .t-title{ font-family:var(--display); font-size:18px; font-weight:600; margin-top:4px; }
+  .t-sub{ font-size:14px; color:var(--ink-soft); margin-top:4px; }
+  .t-bullets{ margin-top:8px; padding-left:18px; }
+  .t-bullets li{ font-size:13.5px; color:var(--ink-soft); margin-top:4px; }
+
+  /* ---- Credentials ---- */
+  .cred-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
+  .cred-card{ background:var(--bg-panel); border:1px solid var(--hair); border-radius:8px; padding:18px 20px; }
+  .cred-card b{ font-family:var(--display); font-size:14.5px; display:block; }
+  .cred-card span{ font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); display:block; margin-top:6px; }
+
+  /* ---- Contact ---- */
+  .contact-card{
+    background:var(--bg-panel); border:1px solid var(--hair); border-radius:10px;
+    padding:56px 44px; display:flex; flex-direction:column; gap:22px;
+  }
+  .contact-card h2{ margin-bottom:0; }
+  .contact-card p{ max-width:54ch; }
+  .contact-links{ display:flex; flex-wrap:wrap; gap:14px; margin-top:8px; }
+  .contact-links a{
+    font-family:var(--mono); font-size:13px; border:1px solid var(--hair); padding:12px 18px;
+    border-radius:4px; transition:border-color .15s, color .15s;
+  }
+  .contact-links a:hover{ border-color:var(--signal); color:var(--signal); }
+  .contact-links a.primary{ background:var(--signal); color:var(--bg); border-color:var(--signal); font-weight:600; }
+  .contact-links a.primary:hover{ background:var(--cyan); border-color:var(--cyan); color:var(--bg); }
+  .contact-phone{ font-family:var(--mono); font-size:12.5px; color:var(--ink-soft); }
+
+  footer{ padding:36px 0; font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); text-align:center; }
+
+  .reveal{ opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo"><span class="dot"></span>KS <span style="color:var(--ink-soft)">·</span> data science</div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-status"><span class="pulse"></span>open to work</div>
+  </nav>
+</header>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">final-year b.tech · cse · rtu kota</div>
+        <h1>Khushi Sharma builds<br>the model <em>after</em><br>the notebook.</h1>
+        <p class="lede">Final-year CS undergrad with four data science internships across forecasting, deep learning, and production ML — 156+ hours saved annually, a 12% F1-score lift, and 15% faster deployment cycles to show for it. Seeking Software Engineering, Data Science, or Applied Science internship roles.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#projects">View projects →</a>
+          <a class="btn btn-ghost" href="resume.pdf" download>Download résumé ↓</a>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><b>9.54</b><span>cgpa / 10.0</span></div>
+          <div class="stat"><b>04</b><span>internships</span></div>
+          <div class="stat"><b>156+</b><span>hrs saved / yr</span></div>
+          <div class="stat"><b>12%</b><span>f1 uplift</span></div>
+        </div>
+      </div>
+      <div class="plot-card">
+        <canvas id="plot" width="440" height="320"></canvas>
+        <div class="plot-caption">
+          <span class="legend">
+            <span><i style="background:var(--ink-soft)"></i>actual</span>
+            <span><i style="background:var(--signal)"></i>forecast</span>
+            <span><i style="background:var(--anomaly)"></i>anomaly</span>
+          </span>
+          <span>retail demand — 90d</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+  <section id="about" class="wrap">
+    <div class="eyebrow">about</div>
+    <div class="about-grid">
+      <div>
+        <p class="reveal">I'm a final-year B.Tech (Computer Science & Engineering) student at Rajasthan Technical University, Kota, focused on data science and machine learning. I like problems where the data is messy, the signal is buried, and the answer has to hold up in production — not just in a notebook.</p>
+        <p class="reveal">Across four internships I've worked the full data science lifecycle: time-series forecasting with anomaly detection, deep learning for classification, REST APIs serving model predictions, and PostgreSQL pipeline automation — each one shipped to real stakeholders, not left as a demo.</p>
+        <p class="reveal">Currently looking for Software Engineering, Data Science, or Applied Science internships — at companies of any size, including big tech new-grad and internship pipelines — where I can work on production-grade models on a team that ships.</p>
+      </div>
+      <div class="fact-card reveal">
+        <div class="fact-row"><span>Education</span><span>B.Tech CSE, RTU Kota</span></div>
+        <div class="fact-row"><span>Graduating</span><span>2027</span></div>
+        <div class="fact-row"><span>CGPA</span><span>9.54 / 10.0</span></div>
+        <div class="fact-row"><span>Leadership</span><span>Core Member, Placement Cell</span></div>
+        <div class="fact-row"><span>Recognition</span><span>Ananya Award · Rank 2, Yr 1</span></div>
+        <div class="fact-row"><span>Location</span><span>Jaipur, Rajasthan, IN</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SKILLS ================= -->
+  <section id="skills" class="wrap">
+    <div class="eyebrow">skills</div>
+    <h2>What I work with</h2>
+    <div class="skill-cats">
+      <div class="skill-cat">
+        <h3>Languages</h3>
+        <div class="chip-row">
+          <button type="button" class="chip" data-filter="python">Python</button><button type="button" class="chip" data-filter="sql">SQL</button><button type="button" class="chip" data-filter="javascript">JavaScript</button>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <h3>ML / Deep Learning</h3>
+        <div class="chip-row">
+          <button type="button" class="chip" data-filter="scikit-learn">Scikit-learn</button><button type="button" class="chip" data-filter="tensorflow">TensorFlow</button><button type="button" class="chip" data-filter="keras">Keras</button><button type="button" class="chip" data-filter="xgboost">XGBoost</button><button type="button" class="chip" data-filter="smote">SMOTE</button><button type="button" class="chip" data-filter="transformers">Transformers</button>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <h3>Data & Analytics</h3>
+        <div class="chip-row">
+          <button type="button" class="chip" data-filter="pandas">Pandas</button><button type="button" class="chip" data-filter="numpy">NumPy</button><button type="button" class="chip" data-filter="powerbi">Power BI</button><button type="button" class="chip" data-filter="time-series">Time-Series</button><button type="button" class="chip" data-filter="postgresql">PostgreSQL</button>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <h3>Deployment & Tools</h3>
+        <div class="chip-row">
+          <button type="button" class="chip" data-filter="flask">Flask</button><button type="button" class="chip" data-filter="react">React</button><button type="button" class="chip" data-filter="rest-api">REST APIs</button><button type="button" class="chip" data-filter="git">Git</button>
+        </div>
+      </div>
+    </div>
+    <div class="filter-hint"><code id="filterLabel">showing all 3 projects</code> <span id="clearFilter" style="display:none; cursor:pointer; text-decoration:underline;">— clear filter</span></div>
+  </section>
+
+  <!-- ================= PROJECTS ================= -->
+  <section id="projects" class="wrap">
+    <div class="eyebrow">projects</div>
+    <h2>Selected work</h2>
+    <div class="proj-list" id="projList">
+
+      <div class="proj" data-tags="python xgboost scikit-learn smote">
+        <div>
+          <span class="proj-status status-deployed">shipped</span>
+          <div class="proj-title">Employee Attrition Prediction</div>
+        </div>
+        <div class="proj-body">
+          <p>End-to-end attrition pipeline on IBM HR Analytics data (1,470 records). Engineered features via one-hot encoding, corrected class imbalance with SMOTE, then trained and compared Logistic Regression, Random Forest, and XGBoost — optimized for recall and F1 to minimize missed at-risk employees. EDA surfaced overtime and low income as the top attrition drivers, packaged into a business report for HR leadership.</p>
+          <div class="proj-metric">Focus: <b>Recall-optimized to catch at-risk employees, not just accuracy</b></div>
+          <div class="proj-tags"><span class="tag">python</span><span class="tag">xgboost</span><span class="tag">smote</span><span class="tag">seaborn</span></div>
+          <div class="proj-links"><a href="https://github.com/Khushi-Veshnav" target="_blank" rel="noopener">GitHub ↗</a></div>
+        </div>
+      </div>
+
+      <div class="proj" data-tags="tensorflow keras transformers flask">
+        <div>
+          <span class="proj-status status-live">live demo</span>
+          <div class="proj-title">Neural Machine Translation Tool</div>
+        </div>
+        <div class="proj-body">
+          <p>Transformer-based NMT system supporting English↔Spanish and English↔French translation, built from scratch with self-attention layers, custom tokenization and vectorization pipelines, and sequence padding for inference efficiency. Deployed as a Flask web app with a GUI front-end — full-cycle productionization from research to a live endpoint.</p>
+          <div class="proj-metric">Focus: <b>Self-attention NMT, research-to-endpoint in one pipeline</b></div>
+          <div class="proj-tags"><span class="tag">tensorflow</span><span class="tag">keras</span><span class="tag">transformers</span><span class="tag">flask</span></div>
+          <div class="proj-links"><a href="https://github.com/Khushi-Veshnav" target="_blank" rel="noopener">GitHub ↗</a></div>
+        </div>
+      </div>
+
+      <div class="proj" data-tags="scikit-learn flask react rest-api">
+        <div>
+          <span class="proj-status status-live">live demo</span>
+          <div class="proj-title">Mood Beats — Mood-Based Music Recommender</div>
+        </div>
+        <div class="proj-body">
+          <p>Mood-classification model mapping user text input to mood categories and recommending matching tracks, trained and serialized with joblib, served through a Flask REST API. Paired with a React/Vite front-end and deployed on Vercel — the only project taken all the way from trained model to a live public UI.</p>
+          <div class="proj-metric">Focus: <b>The only project with a full public deployment, model → UI</b></div>
+          <div class="proj-tags"><span class="tag">scikit-learn</span><span class="tag">flask</span><span class="tag">react</span><span class="tag">vercel</span></div>
+          <div class="proj-links"><a href="https://github.com/Khushi-Veshnav" target="_blank" rel="noopener">GitHub ↗</a></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= EXPERIENCE ================= -->
+  <section id="experience" class="wrap">
+    <div class="eyebrow">experience & education</div>
+    <h2>Timeline</h2>
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-date">Jun 2026 — Jul 2026</div>
+        <div class="t-title">Data Science Intern — Xylofy AI</div>
+        <ul class="t-bullets">
+          <li>Built a demand forecasting and anomaly detection system on historical retail transaction data, with confidence intervals to flag revenue anomalies as market shocks vs. operational issues.</li>
+          <li>Segmented products by revenue impact and demand stability, delivering an interactive Flask dashboard for stakeholders.</li>
+        </ul>
+      </div>
+      <div class="t-item">
+        <div class="t-date">Mar 2026 — May 2026</div>
+        <div class="t-title">Data Science Intern — GRRAS Solutions</div>
+        <ul class="t-bullets">
+          <li>Developed and evaluated deep learning models for classification, improving prediction accuracy on structured datasets.</li>
+          <li>Designed and integrated REST APIs to serve model predictions to downstream applications.</li>
+        </ul>
+      </div>
+      <div class="t-item">
+        <div class="t-date">Jun 2025 — Aug 2025</div>
+        <div class="t-title">Data Science & Analytics Intern Mentor — LinuxWorld Informatics</div>
+        <ul class="t-bullets">
+          <li>Saved 156+ manual reporting hours annually by automating 8 PostgreSQL query pipelines in Python, eliminating ad-hoc requests across 2 teams.</li>
+          <li>Improved classification F1-score by 12% via statistical sampling and SMOTE-based class-imbalance correction on 50K+ production records.</li>
+        </ul>
+      </div>
+      <div class="t-item">
+        <div class="t-date">Aug 2023 — May 2027 (expected)</div>
+        <div class="t-title">B.Tech, Computer Science & Engineering</div>
+        <div class="t-sub">Rajasthan Technical University, Kota — CGPA 9.54 / 10.0 (through Sem 6)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CREDENTIALS ================= -->
+  <section id="credentials" class="wrap">
+    <div class="eyebrow">certifications</div>
+    <div class="cred-grid">
+      <div class="cred-card"><b>Advanced SQL Certification</b><span>HackerRank · 2026</span></div>
+      <div class="cred-card"><b>Google Analytics Certification</b><span>Google · Jul 2026</span></div>
+      <div class="cred-card"><b>Data Analytics Job Simulation</b><span>Deloitte · 2026</span></div>
+      <div class="cred-card"><b>Data Science & DSA Certification</b><span>Learn and Build (LnB) · 2025</span></div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section id="contact" class="wrap">
+    <div class="contact-card">
+      <div class="eyebrow" style="color:var(--anomaly)">get in touch</div>
+      <h2>Let's talk data.</h2>
+      <p>Open to data science, ML engineering, and software engineering internships and full-time roles. Email is the fastest way to reach me — I usually reply within a day.</p>
+      <div class="contact-phone">+91 6378288504</div>
+      <div class="contact-links">
+        <a class="primary" href="mailto:khushiveshnav123@gmail.com">✉ khushiveshnav123@gmail.com</a>
+        <a href="https://github.com/Khushi-Veshnav" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://www.linkedin.com/in/khushi-sharma-7ab1a931b/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://www.hackerrank.com/profile/khushiveshnav123" target="_blank" rel="noopener">HackerRank ↗</a>
+        <a href="resume.pdf" download>Download résumé ↓</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© <span id="year"></span> Khushi Sharma — built with data, deployed with care.</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Hero signature: forecast + confidence interval + anomaly flag ---- */
+  const canvas = document.getElementById('plot');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cInk = '#8D97AE', cSignal = '#7C93FF', cCyan = '#4FD6C4', cAnomaly = '#FF6B5B', cGrid = '#1E2740', cFill = 'rgba(124,147,255,0.14)';
+
+  function seeded(seed){ let s = seed; return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; }; }
+  const rnd = seeded(11);
+
+  const N = 46;
+  const splitAt = 28; // where actual ends and forecast begins
+  const actual = [];
+  let base = H*0.62;
+  for (let i = 0; i < splitAt; i++){
+    base += (rnd()-0.5) * 22;
+    if (i === 18) base -= 46; // dip -> anomaly point
+    actual.push(base);
+  }
+  const forecast = [actual[splitAt-1]];
+  let fbase = actual[splitAt-1];
+  for (let i = splitAt; i < N; i++){
+    fbase += (rnd()-0.42) * 10 - 1.6;
+    forecast.push(fbase);
+  }
+  const anomalyIdx = 18;
+
+  function xAt(i){ return (i/(N-1)) * (W-24) + 12; }
+
+  function drawGrid(){
+    ctx.strokeStyle = cGrid; ctx.lineWidth = 1;
+    for (let x = 0; x <= W; x += 44){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = 0; y <= H; y += 44){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+  }
+
+  function drawActual(upTo){
+    ctx.strokeStyle = cInk; ctx.lineWidth = 2; ctx.beginPath();
+    for (let i = 0; i < upTo; i++){
+      const x = xAt(i), y = actual[i];
+      if (i === 0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+  }
+
+  function drawForecast(progress){
+    const steps = forecast.length - 1;
+    const upTo = Math.max(1, Math.floor(steps * progress));
+    // confidence band
+    ctx.beginPath();
+    for (let i = 0; i <= upTo; i++){
+      const x = xAt(splitAt-1+i), y = forecast[i] - (6 + i*1.1);
+      if (i === 0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    for (let i = upTo; i >= 0; i--){
+      const x = xAt(splitAt-1+i), y = forecast[i] + (6 + i*1.1);
+      ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = cFill;
+    ctx.fill();
+    // forecast line, dashed
+    ctx.setLineDash([5,4]);
+    ctx.strokeStyle = cSignal; ctx.lineWidth = 2.2; ctx.beginPath();
+    for (let i = 0; i <= upTo; i++){
+      const x = xAt(splitAt-1+i), y = forecast[i];
+      if (i === 0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function drawAnomaly(pulse){
+    const x = xAt(anomalyIdx), y = actual[anomalyIdx];
+    ctx.beginPath();
+    ctx.arc(x, y, 4 + pulse*4, 0, Math.PI*2);
+    ctx.strokeStyle = cAnomaly; ctx.globalAlpha = 0.5 - pulse*0.4; ctx.lineWidth = 2;
+    ctx.stroke(); ctx.globalAlpha = 1;
+    ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI*2); ctx.fillStyle = cAnomaly; ctx.fill();
+  }
+
+  let frame = 0;
+  const totalFrames = 100;
+  let pulseFrame = 0;
+
+  function renderStatic(){
+    ctx.clearRect(0,0,W,H); drawGrid(); drawActual(splitAt); drawForecast(1); drawAnomaly(0.5);
+  }
+
+  function animate(){
+    ctx.clearRect(0,0,W,H);
+    drawGrid();
+    const actualProgress = Math.min(1, frame / (totalFrames*0.45));
+    drawActual(Math.floor(splitAt * actualProgress));
+    if (frame > totalFrames*0.4){
+      const fProgress = Math.min(1, (frame - totalFrames*0.4) / (totalFrames*0.55));
+      drawForecast(fProgress);
+    }
+    if (frame > totalFrames*0.25){
+      const p = (Math.sin(pulseFrame/18) + 1) / 2;
+      drawAnomaly(p);
+      pulseFrame++;
+    }
+    frame++;
+    if (frame <= totalFrames){
+      requestAnimationFrame(animate);
+    } else {
+      requestAnimationFrame(function loop(){
+        ctx.clearRect(0,0,W,H); drawGrid(); drawActual(splitAt); drawForecast(1);
+        const p = (Math.sin(pulseFrame/18) + 1) / 2;
+        drawAnomaly(p); pulseFrame++;
+        requestAnimationFrame(loop);
+      });
+    }
+  }
+
+  if (reduceMotion){ renderStatic(); } else { animate(); }
+
+  /* ---- Count-up stats on scroll into view ---- */
+  const stats = document.querySelectorAll('.stat b');
+  const statTargets = [
+    {val:9.54, suffix:'', decimals:2},
+    {val:4, suffix:'', decimals:0},
+    {val:156, suffix:'+', decimals:0},
+    {val:12, suffix:'%', decimals:0}
+  ];
+  let statsAnimated = false;
+  function animateStats(){
+    if (statsAnimated || reduceMotion) return;
+    statsAnimated = true;
+    stats.forEach((el, idx) => {
+      const t = statTargets[idx];
+      const dur = 900, start = performance.now();
+      function tick(now){
+        const p = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1-p, 3);
+        const current = t.val * eased;
+        el.textContent = (t.decimals ? current.toFixed(t.decimals) : Math.floor(current).toString().padStart(2,'0')) + t.suffix;
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = (t.decimals ? t.val.toFixed(t.decimals) : t.val) + t.suffix;
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  /* ---- Scroll reveal ---- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.15});
+  revealEls.forEach(el => io.observe(el));
+
+  const heroStatRow = document.querySelector('.stat-row');
+  if (heroStatRow){
+    const statIo = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting){ animateStats(); statIo.disconnect(); } });
+    }, {threshold:0.4});
+    statIo.observe(heroStatRow);
+  }
+
+  /* ---- Skill-chip project filter ---- */
+  const chips = document.querySelectorAll('.chip');
+  const projects = document.querySelectorAll('.proj');
+  const filterLabel = document.getElementById('filterLabel');
+  const clearFilter = document.getElementById('clearFilter');
+  let activeFilter = null;
+
+  function applyFilter(){
+    let count = 0;
+    projects.forEach(p => {
+      const tags = p.dataset.tags.split(' ');
+      const show = !activeFilter || tags.includes(activeFilter);
+      p.classList.toggle('hide', !show);
+      if (show) count++;
+    });
+    filterLabel.textContent = activeFilter
+      ? `showing ${count} project${count===1?'':'s'} tagged '${activeFilter}'`
+      : 'showing all 3 projects';
+    clearFilter.style.display = activeFilter ? 'inline' : 'none';
+  }
+
+  chips.forEach(chip => {
+    chip.setAttribute('aria-pressed', 'false');
+    chip.addEventListener('click', () => {
+      const f = chip.dataset.filter;
+      chips.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
+      if (activeFilter === f){
+        activeFilter = null;
+      } else {
+        activeFilter = f;
+        chip.classList.add('active');
+        chip.setAttribute('aria-pressed', 'true');
+      }
+      applyFilter();
+      document.getElementById('projects').scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block:'start'});
+    });
+  });
+  clearFilter.addEventListener('click', () => {
+    activeFilter = null; chips.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); }); applyFilter();
+  });
+</script>
+
+</body>
+</html>
